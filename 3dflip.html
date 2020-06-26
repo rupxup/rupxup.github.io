@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <style>
+      .block {
+        height: 24px;
+        width: 24px;
+        background: black;
+        margin: 1px;
+        float: left;
+        border-radius: 4px;
+      }
+
+      .grey {
+        background: grey;
+      }
+
+      .row {
+        clear: both;
+      }
+
+      .level {
+        padding: 4px;
+        float: none;
+        clear: both;
+      }
+    </style>
+    <script>
+      var blocks = [];
+      function flip(l, r, c) {
+        console.log(l, r, c);
+        blocks[l][r][c].classList.toggle("grey");
+        if (l > 0) {
+          blocks[l-1][r][c].classList.toggle("grey");
+        }
+        if (r > 0) {
+          blocks[l][r-1][c].classList.toggle("grey");
+        }
+        if (c > 0) {
+          blocks[l][r][c-1].classList.toggle("grey");
+        }
+        if (l+1 < 6) {
+          blocks[l+1][r][c].classList.toggle("grey");
+        }
+        if (r+1 < 8) {
+          blocks[l][r+1][c].classList.toggle("grey");
+        }
+        if (c+1 < 8) {
+          blocks[l][r][c+1].classList.toggle("grey");
+        }
+      }
+      function create8block(e, l, r) {
+        for (let i = 0; i < 8; ++i) {
+          var c = document.createElement('div');
+          c.classList.add("block");
+          let ii = i;
+          c.addEventListener("click", () => {
+            flip(l, r, ii);
+          });
+          blocks[l][r][i] = c;
+          e.appendChild(c);
+        }
+      }
+      function create8row(e, l) {
+        for (var i = 0; i < 8; ++i) {
+          var c = document.createElement('div');
+          c.classList.add("row");
+          e.appendChild(c);
+          blocks[l][i] = [];
+          create8block(c, l, i);
+        }
+      }
+      function create6level(e) {
+        for (var i = 0; i < 6; ++i) {
+          var c = document.createElement('div');
+          c.classList.add("level");
+          e.appendChild(c);
+          blocks[i] = [];
+          create8row(c, i);
+        }
+      }
+      create6level(document.firstChild);
+    </script>
+  </head>
+</html>
